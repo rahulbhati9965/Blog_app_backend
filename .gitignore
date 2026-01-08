@@ -1,0 +1,17 @@
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Alembic
+alembic.ini
+
+# OS
+.DS_Store
+Thumbs.db
