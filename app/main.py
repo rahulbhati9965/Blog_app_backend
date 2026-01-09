@@ -2,6 +2,19 @@ from fastapi import FastAPI
 from app.database.session import engine
 from app.api.v1.auth import router as auth_router
 from app.api.v1.blogs import router as blog_router
+from app.api.v1.follow import router as follow_router
+from app.api.v1.feed import router as feed_router
+from app.api.v1.profile import router as profile_router
+from app.api.v1.comments import router as comments_router
+from app.api.v1.likes import router as likes_router
+from app.api.v1.search import router as search_router
+from app.api.v1.admin import router as admin_router
+from app.api.v1.notifications import router as notifications_router
+
+
+
+
+
 
 
 
@@ -33,3 +46,12 @@ def db_check():
 
 app.include_router(auth_router)
 app.include_router(blog_router)
+app.include_router(follow_router)
+app.include_router(feed_router)
+app.include_router(profile_router)
+app.include_router(comments_router)
+app.include_router(likes_router)
+app.include_router(search_router)
+app.include_router(admin_router)
+app.include_router(notifications_router)
+

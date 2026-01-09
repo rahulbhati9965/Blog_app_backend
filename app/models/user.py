@@ -1,7 +1,7 @@
 from sqlalchemy import String, Boolean, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
-
+from sqlalchemy import Boolean, String
 from app.database.base import Base
 
 
@@ -23,3 +23,6 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
+
+    role = mapped_column(String, default="user")  # user | admin
+    is_banned = mapped_column(Boolean, default=False)

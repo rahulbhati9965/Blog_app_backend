@@ -22,6 +22,12 @@ def login_user(db: Session, email: str, password: str):
     user = get_user_by_email(db, email)
     if not user or not verify_password(password, user.password_hash):
         raise ValueError("Invalid credentials")
+    
+    if user.is_banned:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your account has been banned",
+        )
 
     token = create_access_token({"sub": str(user.id)})
     return token
