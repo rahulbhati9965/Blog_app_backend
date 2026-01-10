@@ -7,7 +7,7 @@ def get_user_by_email(db: Session, email: str):
 
 
 def create_user(db: Session, user: User):
-    db.add(user)
+    db.add(user)            # ✅ DO NOT hash here
     db.commit()
     db.refresh(user)
     return user
