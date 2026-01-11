@@ -16,6 +16,5 @@ COPY . .
 
 RUN chmod +x wait-for-db.sh
 
-# CMD ["sh", "-c", "./wait-for-db.sh && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
-# CMD ["./wait-for-db.sh", "alembic", "upgrade", "head"]
-CMD ["./wait-for-db.sh", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Render injects PORT dynamically — must use it
+CMD sh -c "./wait-for-db.sh && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"
