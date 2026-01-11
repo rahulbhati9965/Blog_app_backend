@@ -7,9 +7,11 @@ from app.schemas.blog import BlogCreate, BlogResponse
 from app.services.blog_service import (
     create_blog,
     get_all_blogs,
+    get_blog_by_id,   # 👈 ADD THIS
     update_blog,
     delete_blog,
 )
+
 from app.core.dependencies import get_current_user
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
@@ -31,6 +33,14 @@ def list_all(
     db: Session = Depends(get_db),
 ):
     return get_all_blogs(db, limit, offset)
+
+@router.get("/{blog_id}", response_model=BlogResponse)
+def get_one(
+    blog_id: int,
+    db: Session = Depends(get_db),
+):
+    return get_blog_by_id(db, blog_id)
+
 
 
 @router.put("/{blog_id}", response_model=BlogResponse)

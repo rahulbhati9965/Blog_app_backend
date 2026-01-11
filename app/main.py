@@ -10,7 +10,9 @@ from app.api.v1.likes import router as likes_router
 from app.api.v1.search import router as search_router
 from app.api.v1.admin import router as admin_router
 from app.api.v1.notifications import router as notifications_router
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.api.v1.users import router as users_router
 
 
 
@@ -44,6 +46,20 @@ def db_check():
     
 
 
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",  # frontend (Vite)
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.include_router(auth_router)
 app.include_router(blog_router)
 app.include_router(follow_router)
@@ -54,4 +70,4 @@ app.include_router(likes_router)
 app.include_router(search_router)
 app.include_router(admin_router)
 app.include_router(notifications_router)
-
+app.include_router(users_router)

@@ -83,3 +83,15 @@ def delete_blog(db, blog_id: int, current_user_id: int):
     db.delete(blog)
     db.commit()
     return {"message": "Blog deleted successfully"}
+
+
+def get_blog_by_id(db: Session, blog_id: int) -> Blog:
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+
+    if not blog:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Blog not found",
+        )
+
+    return blog
