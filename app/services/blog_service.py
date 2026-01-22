@@ -20,14 +20,12 @@ def get_all_blogs(
     db: Session,
     limit: int = 10,
     offset: int = 0,
+    exclude_blog_ids: list = None,
 ):
-    return (
-        db.query(Blog)
-        .order_by(Blog.created_at.desc())
-        .limit(limit)
-        .offset(offset)
-        .all()
-    )
+    query = db.query(Blog).filter(Blog.is_deleted == False).order_by(Blog.created_at.desc())
+    if exclude_blog_ids:
+        query = query.filter(~Blog.id.in_(exclude_blog_ids))
+    return query.limit(limit).offset(offset).all()
 
 
 

@@ -1,6 +1,9 @@
-from app.models.user import User  # noqa
-from app.models.blog import Blog  # noqa
-from app.models.follow import Follow  # noqa
-from app.models.comment import Comment  # noqa
-from app.models.like import Like  # noqa
-from app.models.notification import Notification  # noqa
+from app.models.user import User
+from app.models.blog import Blog
+from app.models.comment import Comment
+from app.models.like import Like
+from app.models.follow import Follow
+from app.models.user_keyword import UserKeyword
+from app.models.notification import Notification
+from app.models.blog_keyword import BlogKeyword
+from app.models.blog_vector import BlogVector

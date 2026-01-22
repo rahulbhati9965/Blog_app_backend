@@ -15,3 +15,4 @@ class UserProfileResponse(BaseModel):
     class Config:
         from_attributes = True
 
+

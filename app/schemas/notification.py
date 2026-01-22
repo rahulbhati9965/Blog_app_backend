@@ -4,6 +4,7 @@ from datetime import datetime
 
 class NotificationResponse(BaseModel):
     id: int
+    user_id: int
     actor_id: int
     type: str
     entity_id: int

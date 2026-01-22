@@ -79,3 +79,12 @@ def delete_comment(
     return {"message": "Comment deleted"}
 
 
+def get_commented_blogs_by_user(db: Session, user_id: int):
+    return (
+        db.query(Blog)
+        .join(Comment, Blog.id == Comment.blog_id)
+        .filter(Comment.user_id == user_id, Blog.is_deleted == False)
+        .all()
+    )
+
+

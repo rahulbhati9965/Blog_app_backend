@@ -73,3 +73,12 @@ def unfollow_user(
     db.delete(follow)
     db.commit()
     return {"message": "User unfollowed successfully"}
+
+
+def get_followed_users(db: Session, user_id: int):
+    follows = (
+        db.query(Follow)
+        .filter(Follow.follower_id == user_id)
+        .all()
+    )
+    return [follow.following_id for follow in follows]

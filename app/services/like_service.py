@@ -72,3 +72,12 @@ def get_like_count(db: Session, blog_id: int):
     )
 
 
+def get_liked_blogs_by_user(db: Session, user_id: int):
+    return (
+        db.query(Blog)
+        .join(Like, Blog.id == Like.blog_id)
+        .filter(Like.user_id == user_id, Blog.is_deleted == False)
+        .all()
+    )
+
+

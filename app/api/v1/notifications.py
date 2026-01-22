@@ -12,12 +12,17 @@ from app.services.notification_service import (
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 
 
-@router.get("/", response_model=list[NotificationResponse])
+@router.get("", response_model=list[NotificationResponse])
 def list_notifications(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return get_notifications(db, current_user.id)
+    try:
+        return get_notifications(db, current_user.id)
+    except Exception as e:
+        print("NOTIFICATION ERROR:", e)
+        return []
+
 
 
 @router.post("/{notification_id}/read")
