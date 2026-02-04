@@ -1,27 +1,21 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.core.config import settings
+# Render + production standard
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# DATABASE_URL = (
-#     f"postgresql+psycopg2://{settings.DB_USER}:"
-#     f"{settings.DB_PASSWORD}@{settings.DB_HOST}:"
-#     f"{settings.DB_PORT}/{settings.DB_NAME}"
-# )
-DATABASE_URL = (
-    f"postgresql+psycopg2://{settings.DB_USER}:"
-    f"{settings.DB_PASSWORD}@{settings.DB_HOST}:"
-    f"{settings.DB_PORT}/{settings.DB_NAME}"
-)
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable is not set")
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True,        # logs SQL queries (dev only)
-    future=True
+    echo=False,   # IMPORTANT: keep False in production
+    future=True,
 )
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
-    bind=engine
+    bind=engine,
 )
