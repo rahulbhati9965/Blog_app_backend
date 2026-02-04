@@ -20,11 +20,16 @@ import app.models  # 👈 IMPORTANT: loads all models safely
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 
-DATABASE_URL = (
-    f"postgresql+psycopg2://{settings.DB_USER}:"
-    f"{settings.DB_PASSWORD}@{settings.DB_HOST}:"
-    f"{settings.DB_PORT}/{settings.DB_NAME}"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    # fallback for local dev
+    DATABASE_URL = (
+        f"postgresql+psycopg2://{settings.DB_USER}:"
+        f"{settings.DB_PASSWORD}@{settings.DB_HOST}:"
+        f"{settings.DB_PORT}/{settings.DB_NAME}"
+    )
+
 
 # Alembic Config object
 config = context.config
