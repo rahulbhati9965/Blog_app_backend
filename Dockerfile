@@ -17,4 +17,6 @@ COPY . .
 RUN chmod +x wait-for-db.sh
 
 # Render injects PORT dynamically — must use it
-CMD sh -c "./wait-for-db.sh && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"
+# CMD sh -c "./wait-for-db.sh && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"
+
+CMD sh -c "./wait-for-db.sh && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
