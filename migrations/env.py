@@ -1,9 +1,4 @@
-import sys
 import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-
 import sys
 from pathlib import Path
 from logging.config import fileConfig
@@ -11,35 +6,24 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-from app.core.config import settings
-from app.database.base import Base
-import app.models  # 👈 IMPORTANT: loads all models safely
-
-
-# Ensure app is on PYTHONPATH
+# Make app importable
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    # fallback for local dev
-    DATABASE_URL = (
-        f"postgresql+psycopg2://{settings.DB_USER}:"
-        f"{settings.DB_PASSWORD}@{settings.DB_HOST}:"
-        f"{settings.DB_PORT}/{settings.DB_NAME}"
-    )
-
+from app.database.base import Base
+import app.models  # noqa: F401  (loads all models)
 
 # Alembic Config object
 config = context.config
 
+# --- DATABASE URL ---
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable is not set")
 
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
-
 # Logging
-if config.config_file_name is not None:
+if config.config_file_name:
     fileConfig(config.config_file_name)
 
 # Metadata for autogenerate
@@ -59,11 +43,8 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    section = config.get_section(config.config_ini_section)
-    section["sqlalchemy.url"] = DATABASE_URL
-
     connectable = engine_from_config(
-        section,
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
@@ -72,7 +53,7 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            compare_type=True,  # 👈 important
+            compare_type=True,
         )
 
         with context.begin_transaction():
