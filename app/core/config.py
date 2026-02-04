@@ -1,20 +1,10 @@
 from pydantic_settings import BaseSettings
+import os
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Blog Platform"
-    ENV: str = "development"
-
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    DB_USER: str
-    DB_PASSWORD: str
-
+    DATABASE_URL: str
     JWT_SECRET_KEY: str
-    JWT_ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     class Config:
         env_file = ".env"
